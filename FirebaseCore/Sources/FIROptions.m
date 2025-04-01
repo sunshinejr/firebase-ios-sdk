@@ -162,6 +162,7 @@ static dispatch_once_t sDefaultOptionsDictionaryOnceToken;
   if (newOptions) {
     newOptions.deepLinkURLScheme = self.deepLinkURLScheme;
     newOptions.appGroupID = self.appGroupID;
+    newOptions.useMemoryOnlyInstallations = self.useMemoryOnlyInstallations;
     newOptions.editingLocked = self.isEditingLocked;
     newOptions.usingOptionsFromDefaultPlist = self.usingOptionsFromDefaultPlist;
   }
@@ -205,6 +206,7 @@ static dispatch_once_t sDefaultOptionsDictionaryOnceToken;
     [mutableOptionsDict setValue:GCMSenderID forKey:kFIRGCMSenderID];
     [mutableOptionsDict setValue:[[NSBundle mainBundle] bundleIdentifier] forKey:kFIRBundleID];
     self.optionsDictionary = mutableOptionsDict;
+    self.useMemoryOnlyInstallations = NO;
   }
   return self;
 }
@@ -367,6 +369,10 @@ static dispatch_once_t sDefaultOptionsDictionaryOnceToken;
     return NO;
   }
 
+  if (options.useMemoryOnlyInstallations != self.useMemoryOnlyInstallations) {
+    return NO;
+  }
+
   // Validate the Analytics options haven't changed with the Info.plist.
   if (![options.analyticsOptionsDictionary isEqualToDictionary:self.analyticsOptionsDictionary]) {
     return NO;
@@ -384,7 +390,8 @@ static dispatch_once_t sDefaultOptionsDictionaryOnceToken;
   // Note: `self.analyticsOptionsDictionary` was left out here since it solely relies on the
   // contents of the main bundle's `Info.plist`. We should avoid reading that file and the contents
   // should be identical.
-  return self.optionsDictionary.hash ^ self.deepLinkURLScheme.hash ^ self.appGroupID.hash;
+  return self.optionsDictionary.hash ^ self.deepLinkURLScheme.hash ^ self.appGroupID.hash ^ 
+         (self.useMemoryOnlyInstallations ? 1 : 0);
 }
 
 #pragma mark - Internal instance methods

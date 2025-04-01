@@ -34,6 +34,9 @@
 #import "FirebaseInstallations/Source/Library/InstallationsIDController/FIRInstallationsBackoffController.h"
 #import "FirebaseInstallations/Source/Library/InstallationsIDController/FIRInstallationsSingleOperationPromiseCache.h"
 #import "FirebaseInstallations/Source/Library/InstallationsStore/FIRInstallationsStore.h"
+#import "FirebaseInstallations/Source/Library/InstallationsStore/FIRInstallationsMemoryStore.h"
+#import "FirebaseInstallations/Source/Library/InstallationsStore/FIRInstallationsStorageProtocol.h"
+#import "FirebaseInstallations/Source/Library/InstallationsStore/GULKeychainStorage+FIRInstallationsStorageProtocol.h"
 
 #import "FirebaseInstallations/Source/Library/Errors/FIRInstallationsHTTPError.h"
 #import "FirebaseInstallations/Source/Library/InstallationsStore/FIRInstallationsStoredAuthToken.h"
@@ -74,7 +77,16 @@ static NSString *const kKeychainService = @"com.firebase.FIRInstallations.instal
 - (instancetype)initWithApp:(FIRApp *)app {
   NSString *serviceName =
       [FIRInstallationsIDController keychainServiceWithAppID:app.options.googleAppID];
-  GULKeychainStorage *secureStorage = [[GULKeychainStorage alloc] initWithService:serviceName];
+  id<FIRInstallationsStorageProtocol> secureStorage;
+  
+  if (app.options.useMemoryOnlyInstallations) {
+    FIRLogDebug(kFIRLoggerInstallations, kFIRInstallationsMessageCodeInstallationStorage, @"Using %@ storage.", @"in-memory");
+    secureStorage = [[FIRInstallationsMemoryStore alloc] initWithService:serviceName];
+  } else {
+    FIRLogDebug(kFIRLoggerInstallations, kFIRInstallationsMessageCodeInstallationStorage, @"Using %@ storage.", @"Keychain");
+    secureStorage = [[GULKeychainStorage alloc] initWithService:serviceName];
+  }
+  
   FIRInstallationsStore *installationsStore =
       [[FIRInstallationsStore alloc] initWithSecureStorage:secureStorage
                                                accessGroup:app.options.appGroupID];

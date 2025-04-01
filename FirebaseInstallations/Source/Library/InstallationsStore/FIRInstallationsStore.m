@@ -15,6 +15,7 @@
  */
 
 #import "FirebaseInstallations/Source/Library/InstallationsStore/FIRInstallationsStore.h"
+#import "FirebaseInstallations/Source/Library/InstallationsStore/FIRInstallationsStorageProtocol.h"
 
 #import <GoogleUtilities/GULUserDefaults.h>
 
@@ -33,7 +34,7 @@
 NSString *const kFIRInstallationsStoreUserDefaultsID = @"com.firebase.FIRInstallations";
 
 @interface FIRInstallationsStore ()
-@property(nonatomic, readonly) GULKeychainStorage *secureStorage;
+@property(nonatomic, readonly) id<FIRInstallationsStorageProtocol> secureStorage;
 @property(nonatomic, readonly, nullable) NSString *accessGroup;
 @property(nonatomic, readonly) dispatch_queue_t queue;
 @property(nonatomic, readonly) GULUserDefaults *userDefaults;
@@ -41,7 +42,7 @@ NSString *const kFIRInstallationsStoreUserDefaultsID = @"com.firebase.FIRInstall
 
 @implementation FIRInstallationsStore
 
-- (instancetype)initWithSecureStorage:(GULKeychainStorage *)storage
+- (instancetype)initWithSecureStorage:(id<FIRInstallationsStorageProtocol>)storage
                           accessGroup:(NSString *)accessGroup {
   self = [super init];
   if (self) {

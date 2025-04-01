@@ -98,6 +98,13 @@ NS_SWIFT_NAME(FirebaseOptions)
 @property(nonatomic, copy, nullable) NSString *appGroupID;
 
 /**
+ * A flag indicating whether Firebase Installations should use in-memory storage instead of Keychain.
+ * This is useful when you want to avoid using Keychain, for example in app extensions.
+ * Default value is `NO`.
+ */
+@property(nonatomic, assign) BOOL useMemoryOnlyInstallations;
+
+/**
  * Initializes a customized instance of FirebaseOptions from the file at the given plist file path.
  * This will read the file synchronously from disk.
  * For example:

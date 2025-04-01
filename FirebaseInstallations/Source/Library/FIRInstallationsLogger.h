@@ -37,6 +37,7 @@ extern NSString *const kFIRInstallationsMessageCodeNewGetAuthTokenOperationCreat
 extern NSString *const kFIRInstallationsMessageCodeNewDeleteInstallationOperationCreated;
 extern NSString *const kFIRInstallationsMessageCodeInvalidFirebaseConfiguration;
 extern NSString *const kFIRInstallationsMessageCodeCorruptedStoredInstallation;
+extern NSString *const kFIRInstallationsMessageCodeInstallationStorage;
 
 // FIRInstallationsStoredItem.m
 extern NSString *const kFIRInstallationsMessageCodeInstallationCoderVersionMismatch;
