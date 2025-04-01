@@ -158,6 +158,14 @@ NSArray *ABTExperimentsToClearFromPayloads(
   return (FIRExperimentController *)instance;
 }
 
++ (FIRExperimentController *)sharedInstanceForApp:(NSString *)appName {
+    FIRApp *app = [FIRApp appNamed:appName];
+    id<FIRABTInstanceProvider> instance = FIR_COMPONENT(FIRABTInstanceProvider, app.container);
+
+    // We know the instance coming from the container is a FIRExperimentController instance, cast it.
+    return (FIRExperimentController *)instance;
+}
+
 - (void)updateExperimentsWithServiceOrigin:(NSString *)origin
                                     events:(FIRLifecycleEvents *)events
                                     policy:(ABTExperimentPayloadExperimentOverflowPolicy)policy

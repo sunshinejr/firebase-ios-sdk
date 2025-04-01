@@ -165,7 +165,7 @@ static NSMutableDictionary<NSString *, NSMutableDictionary<NSString *, FIRRemote
                                                    firebaseAppName:appName
                                                        googleAppID:options.googleAppID];
 
-    FIRExperimentController *experimentController = [FIRExperimentController sharedInstance];
+    FIRExperimentController *experimentController = [FIRExperimentController sharedInstanceForApp:appName];
     _configExperiment = [[RCNConfigExperiment alloc] initWithDBManager:_DBManager
                                                   experimentController:experimentController];
     /// Serial queue for read and write lock.

@@ -35,6 +35,9 @@ NS_SWIFT_NAME(ExperimentController)
 /// Returns the FIRExperimentController singleton.
 + (FIRExperimentController *)sharedInstance;
 
+/// Returns the FIRExperimentController singleton for the specified app.
++ (FIRExperimentController *)sharedInstanceForApp:(NSString *)appName;
+
 /// Updates the list of experiments with an optional completion handler. Experiments already
 /// existing in payloads are not affected, whose state and payload is preserved. This method
 /// compares whether the experiments have changed or not by their variant ID. This runs in a
