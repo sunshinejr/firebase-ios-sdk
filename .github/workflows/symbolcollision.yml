@@ -3,6 +3,7 @@ name: symbolcollision
 # Tests the Pods listed in SymbolCollisionTest/Podfile for symbol collisions.
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
     - '.github/workflows/symbolcollision.yml'
@@ -31,7 +32,7 @@ jobs:
     - name: Setup Bundler
       run: scripts/setup_bundler.sh
     - name: Xcode
-      run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+      run: sudo xcode-select -s /Applications/Xcode_16.3.app/Contents/Developer
     - name: Prereqs
       run: scripts/install_prereqs.sh SymbolCollision iOS
     - name: Build
